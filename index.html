@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đăng nhập</title>
+
+<style>
+  body{
+    font-family: Arial;
+
+    background-image: url("https://cellphones.com.vn/sforum/wp-content/uploads/2023/05/Netflix-3.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .login-box{
+    background: #000000;
+    padding: 25px;
+    width: 300px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+  }
+
+  input{
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+    background: #444;
+    border: none;
+    border-radius: 5px;
+    color: white;
+  }
+
+  input::placeholder{
+    color: #ffffff;
+  }
+
+  button{
+    width: 95%;
+    padding: 10px;
+    background: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover{
+    background: #e90000f8;
+  }
+
+  #message{
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <h2>Đăng nhập</h2>
+
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <div id="message"></div>
+</div>
+
+<script>
+function login(){
+  let user = document.getElementById("username").value;
+  let pass = document.getElementById("password").value;
+
+  if(user === "" || pass === ""){
+    document.getElementById("message").innerHTML = "Vui lòng nhập đầy đủ!";
+    document.getElementById("message").style.color = "red";
+    return;
+  }
+
+  if(user === correctUser && pass === correctPass){
+    document.getElementById("message").innerHTML = "Đăng nhập thành công!";
+    document.getElementById("message").style.color = "lightgreen";
+  }else{
+    document.getElementById("message").innerHTML = "Sai tài khoản hoặc mật khẩu!";
+    document.getElementById("message").style.color = "red";
+  }
+}
+</script>
+
+</body>
+</html>
