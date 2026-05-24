@@ -2,13 +2,13 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Đăng nhập</title>
+<title>Đăng nhập & Đăng ký</title>
 
 <style>
   body{
     font-family: Arial;
 
-    background-image: url("https://cellphones.com.vn/sforum/wp-content/uploads/2023/05/Netflix-3.jpg");
+    background-image: url("https://cdn.tgdd.vn//GameApp/1272596//web-xem-phim-1-800x420.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -20,82 +20,184 @@
     height: 100vh;
   }
 
-  .login-box{
-    background: #000000;
+  .box{
+    background: #ffffff;
     padding: 25px;
-    width: 300px;
+    width: 320px;
     border-radius: 10px;
     text-align: center;
-    color: white;
+    color: black;
   }
 
   input{
     width: 90%;
     padding: 10px;
     margin: 10px;
-    background: #444;
+    background: #c4c4c4;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: black;
   }
 
   input::placeholder{
-    color: #ffffff;
+    color: black;
   }
 
   button{
     width: 95%;
     padding: 10px;
-    background: #ff0000;
+    background: #87CEEB;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
   }
 
   button:hover{
-    background: #e90000f8;
+    background: #000080;
   }
 
   #message{
     margin-top: 10px;
     font-weight: bold;
   }
+
+  .hidden{
+    display: none;
+  }
+
+  a{
+    color: blue;
+    cursor: pointer;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="login-box">
-  <h2>Đăng nhập</h2>
+<div class="box">
 
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
+  <!-- ĐĂNG NHẬP -->
+  <div id="loginForm">
 
-  <button onclick="login()">Login</button>
+    <h2>Đăng nhập</h2>
+
+    <input type="text" id="loginUser" placeholder="Username">
+
+    <input type="password" id="loginPass" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p>Chưa có tài khoản?
+      <a onclick="showRegister()">Đăng ký</a>
+    </p>
+
+  </div>
+
+  <!-- ĐĂNG KÝ -->
+  <div id="registerForm" class="hidden">
+
+    <h2>Đăng ký</h2>
+
+    <input type="text" id="registerUser" placeholder="Username">
+
+    <input type="password" id="registerPass" placeholder="Password">
+
+    <button onclick="register()">Register</button>
+
+    <p>Đã có tài khoản?
+      <a onclick="showLogin()">Đăng nhập</a>
+    </p>
+
+  </div>
 
   <div id="message"></div>
+
 </div>
 
 <script>
-function login(){
-  let user = document.getElementById("username").value;
-  let pass = document.getElementById("password").value;
+
+// Hiện form đăng ký
+function showRegister(){
+  document.getElementById("loginForm").classList.add("hidden");
+  document.getElementById("registerForm").classList.remove("hidden");
+  document.getElementById("message").innerHTML = "";
+}
+
+// Hiện form đăng nhập
+function showLogin(){
+  document.getElementById("registerForm").classList.add("hidden");
+  document.getElementById("loginForm").classList.remove("hidden");
+  document.getElementById("message").innerHTML = "";
+}
+
+// ĐĂNG KÝ
+function register(){
+
+  let user = document.getElementById("registerUser").value.trim();
+  let pass = document.getElementById("registerPass").value.trim();
+
+  let message = document.getElementById("message");
 
   if(user === "" || pass === ""){
-    document.getElementById("message").innerHTML = "Vui lòng nhập đầy đủ!";
-    document.getElementById("message").style.color = "red";
+    message.innerHTML = "Vui lòng nhập đầy đủ!";
+    message.style.color = "red";
     return;
   }
 
-  if(user === correctUser && pass === correctPass){
-    document.getElementById("message").innerHTML = "Đăng nhập thành công!";
-    document.getElementById("message").style.color = "lightgreen";
+  // Tạo object JSON
+  let account = {
+    username: user,
+    password: pass
+  };
+
+  // Lưu LocalStorage dạng JSON
+  localStorage.setItem("account", JSON.stringify(account));
+
+  message.innerHTML = "Đăng ký thành công!";
+  message.style.color = "green";
+
+  // Xóa input
+  document.getElementById("registerUser").value = "";
+  document.getElementById("registerPass").value = "";
+}
+
+// ĐĂNG NHẬP
+function login(){
+
+  let user = document.getElementById("loginUser").value.trim();
+  let pass = document.getElementById("loginPass").value.trim();
+
+  let message = document.getElementById("message");
+
+  // Lấy dữ liệu JSON từ LocalStorage
+  let data = localStorage.getItem("account");
+
+  // Kiểm tra có tài khoản chưa
+  if(data === null){
+    message.innerHTML = "Chưa có tài khoản!";
+    message.style.color = "red";
+    return;
+  }
+
+  // Chuyển JSON thành object
+  let account = JSON.parse(data);
+
+  // Kiểm tra đăng nhập
+  if(user === account.username && pass === account.password){
+
+    message.innerHTML = "Đăng nhập thành công!";
+    message.style.color = "green";
+
   }else{
-    document.getElementById("message").innerHTML = "Sai tài khoản hoặc mật khẩu!";
-    document.getElementById("message").style.color = "red";
+
+    message.innerHTML = "Sai tài khoản hoặc mật khẩu!";
+    message.style.color = "red";
+
   }
 }
+
 </script>
 
 </body>
